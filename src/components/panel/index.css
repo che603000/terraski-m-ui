@@ -1,0 +1,5 @@
+@media (max-height: 568px) {
+    div[style $='transform: translate(0px, 64px);'] {
+        transform: translateY(0) !important;
+    }
+}

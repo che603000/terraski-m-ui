@@ -1,0 +1,26 @@
+{
+  "name": "terraski-ui",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "react-app-rewired start",
+    "prod": "react-app-rewired build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "material-ui": "^0.20.0",
+    "mobx": "^4.2.0",
+    "mobx-react": "^5.0.0",
+    "react": "^15.6.2",
+    "react-dom": "^15.6.2",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.4"
+  },
+  "devDependencies": {
+    "react-app-rewire-mobx": "^1.0.8",
+    "react-app-rewired": "^1.5.2",
+    "replace-bundle-webpack-plugin": "^1.0.0"
+  }
+}
