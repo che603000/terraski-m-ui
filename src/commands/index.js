@@ -1,11 +1,11 @@
 import {tasks} from '../models/index';
 import {appFetch} from '../services/fetch';
-import {TASK_SAVE, TASK_REMOVE} from './const';
+import {CMD_TASK_SAVE, CMD_TASK_REMOVE} from '../const';
 
 
 export default (command, params, options = {}) => {
     switch (command) {
-        case TASK_REMOVE: {
+        case CMD_TASK_REMOVE: {
             const {id} = params;
             return appFetch({data: {id}})
                 .then(() => {
@@ -13,15 +13,16 @@ export default (command, params, options = {}) => {
                     item && tasks.remove(item);
                 });
         }
-        case TASK_SAVE: {
-            const {isNew = false} = options;
-            return appFetch({data: params})
+        case CMD_TASK_SAVE: {
+            const task = params;
+
+            return appFetch({data: task})
                 .then(() => {
-                    if (isNew)
-                        tasks.push(params);
+                    if (task.isNew)
+                        tasks.push(task);
                     else {
-                        const item = tasks.find(task => task.id === params.id);
-                        item && item.setProps(params.toJSON());
+                        const item = tasks.find(t => t.id === params.id);
+                        item && item.setProps(task.toJSON());
                     }
                 });
         }

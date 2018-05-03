@@ -9,7 +9,7 @@ export default class Header extends Component {
     }
 
     render() {
-        console.log(this);
+        //console.log(this);
         return (
             <AppBar
                 title="Title"

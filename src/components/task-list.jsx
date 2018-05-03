@@ -3,18 +3,17 @@ import {observer, inject} from 'mobx-react';
 
 import {Link} from 'react-router-dom';
 
-//import ModelTask from '../models/task';
 import {List, ListItem, Dialog, FlatButton, Snackbar, Divider} from 'material-ui';
 import {ActionDelete} from 'material-ui/svg-icons';
 
-import {TASK_REMOVE} from '../commands/const';
-//import Task from './page-watering-task';
+import ModelTask from '../models/task';
+import {CMD_TASK_REMOVE, CMD_TASK_SAVE, TYPE_MESSAGE_SUCCESS, TYPE_MESSAGE_ERROR} from '../const';
 
 
 @observer
 class Item extends Component {
 
-    state={
+    state = {
         open: false
     }
 
@@ -34,12 +33,16 @@ class Item extends Component {
             />,
             <FlatButton
                 label="Да"
-                onClick={() => {this.setState({open: false}); onRemove(id)}}
+                onClick={() => {
+                    this.setState({open: false});
+                    onRemove(id)
+                }}
             />,
         ];
         return (
             <div>
                 <Dialog
+                    contentStyle={{width: '400px'}}
                     title="Удаление"
                     actions={actions}
                     modal={true}
@@ -47,7 +50,7 @@ class Item extends Component {
                 >
                     Задача будет удалена. Продолжать ?
                 </Dialog>
-                <Link key={id} to={`/tasks/${id}`}>
+                <Link key={id} to={`/task/${id}`}>
                     <ListItem primaryText={name} rightIcon={<ActionDelete onClick={this.onRemove}/>}/>
                 </Link>
             </div>
@@ -55,20 +58,6 @@ class Item extends Component {
         )
     }
 
-    // return (
-    //     <Row>
-    //         <Col width={"10%"} onClick={() => onDelete(row)}>
-    //             <Icon icon="md-delete" size={20}/>
-    //         </Col>
-    //         <Col width={"90%"} onClick={() => onSelect(row)}>
-    //             <div className={row.active ? "app-task-active" : "app-task-disabled"}>
-    //                 {row.name}
-    //                 {/*<span> </span>*/}
-    //                 {/*{row.active ? : null}*/}
-    //             </div>
-    //         </Col>
-    //     </Row>
-    // )
 
 }
 
@@ -78,48 +67,43 @@ export default class TaskList extends Component {
 
     state = {
         open: false,
-        message: ""
+        message: "",
+        type: TYPE_MESSAGE_SUCCESS
     }
-
-    // onNew = () => {
-    //     const {commands, navigator} = this.props;
-    //     const data = new ModelTask();
-    //     const props = {data, commands, options: {isNew: true}};
-    //     navigator.pushPage({component: Task, props});
-    // }
-    //
 
     onRemove = (id) => {
         const {commands} = this.props;
-        id && commands(TASK_REMOVE, {id})
+        id && commands(CMD_TASK_REMOVE, {id})
             .then(() => {
-                this.setState({open: true, message: "Задача успешно удалена."});
+                this.setState({
+                    open: true,
+                    message: "Задача успешно удалена.",
+                    type: TYPE_MESSAGE_SUCCESS
+                });
             });
-
     }
 
     render() {
         const {tasks} = this.props;
-
-
         const items = tasks.peek().map(t => <Item key={t.id} {...t} onRemove={this.onRemove}/>);
 
         return (
             <div>
-
                 <List>
                     {items}
                 </List>
 
-                <Divider />
+                <Divider/>
                 <Snackbar
                     open={this.state.open}
                     message={this.state.message}
-                    bodyStyle={{backgroundColor: '#393'}}
+                    bodyStyle={{backgroundColor: this.state.type}}
                     autoHideDuration={4000}
                     onRequestClose={() => this.setState({open: false})}
                 />
-                <FlatButton label="Новая задача" fullWidth={true} labelPosition={"after"}/>
+                <Link to={'/task'}>
+                    <FlatButton label="Новая задача" fullWidth={true} labelPosition={"after"}/>
+                </Link>
             </div>
         );
     }

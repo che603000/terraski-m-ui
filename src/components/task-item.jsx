@@ -1,30 +1,49 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {observer, inject} from 'mobx-react';
-// import {TASK_REMOVE} from '../commands/const';
-// import {Link} from 'react-router-dom';
-//
-// import ModelTask from '../models/task';
-import {List, ListItem, TextField, Toggle, Slider, SelectField, MenuItem, TimePicker, FlatButton, Badge} from 'material-ui';
+
+import {TextField, Toggle, Slider, SelectField, MenuItem, TimePicker, FlatButton, Snackbar} from 'material-ui';
 import FontIcon from 'material-ui/FontIcon';
 
+import {CMD_TASK_SAVE, TYPE_MESSAGE_SUCCESS, TYPE_MESSAGE_ERROR} from '../const';
+import ModelTask from '../models/task';
 
-const recentsIcon = <FontIcon className="material-icons">restore</FontIcon>;
 
 @inject((stores, props) => {
     const {match: {params: {id}}} = props;
-    const {tasks} = stores;
+    const {tasks, commands} = stores;
     const task = tasks.find(item => item.id === id);
-    return {task};
+    return {task, commands};
 })
 @observer
 export default class TaskItem extends Component {
 
+    static contextTypes = {
+        router: PropTypes.object
+    }
+
+    state = {
+        open: false,
+        message: "no message",
+        type: TYPE_MESSAGE_SUCCESS
+    }
+
     isChange = false;
 
+    onSave = () => {
+        const {commands} = this.props;
+        commands(CMD_TASK_SAVE, this.task)
+            .then(() => this.onCancel())
+            .catch(err => this.setState({open: true, message: err.message, type: TYPE_MESSAGE_ERROR}));
+    }
+
+    onCancel = () => {
+        const {router: {history}} = this.context;
+        history.goBack();
+    }
+
     onChange = (name, value) => {
-        const {task} = this.props;
         this.isChange = true;
-        task.setProps({[name]: value})
+        this.task.setProps({[name]: value});
     }
 
     onTime = (e, date) => {
@@ -41,16 +60,18 @@ export default class TaskItem extends Component {
         return date;
     }
 
-    render() {
-        const {match: {params: {id}}, task} = this.props;
+    componentWillMount() {
+        this.task = this.props.task ? this.props.task.clone() : new ModelTask();
+    }
 
+    render() {
         const fieldSliderStyle = {
             width: '256px',
             fontFamily: 'Roboto, sans-serif',
             opacity: 1,
             color: 'rgba(0, 0, 0, 0.3)'
         }
-        const {active = true, timeOn = "00:00", time = 10, name = "No name", temp = 10, area = "1"} = task || {};
+        const {active, timeOn, time, name, temp, area} = this.task;
         return (
             <div>
                 <div style={{marginLeft: '10px'}}>
@@ -120,9 +141,15 @@ export default class TaskItem extends Component {
 
                     </div>
                 </div>
-                <FlatButton label="Отменить" fullWidth={false} labelPosition={"after"}/>
-                <FlatButton label="Сохранить" fullWidth={false} labelPosition={"after"} primary={true}/>
-
+                <FlatButton label="Отменить" fullWidth={false} labelPosition={"after"} onClick={this.onCancel}/>
+                <FlatButton label="Сохранить" fullWidth={false} labelPosition={"after"} primary={true} onClick={this.onSave}/>
+                <Snackbar
+                    open={this.state.open}
+                    message={this.state.message}
+                    bodyStyle={{backgroundColor: this.state.type}}
+                    autoHideDuration={4000}
+                    onRequestClose={() => this.setState({open: false})}
+                />
             </div>
         );
     }

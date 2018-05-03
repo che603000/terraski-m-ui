@@ -1,17 +1,23 @@
-import {observable, action, toJS} from 'mobx';
+import {observable, computed, action, toJS} from 'mobx';
 
 export default class Task {
 
-    id = (Math.random() * 10e8 | 0).toString();
+    @computed
+    get isNew(){
+        return !this.id;
+    }
+
+    @observable
+    id = undefined
 
     @observable
     active = true
 
     @observable
-    area = "1"
+    area = 1
 
     @observable
-    name = 'Зона 2. Утро'
+    name = 'Новая задача'
 
     @observable
     active = false
@@ -20,10 +26,10 @@ export default class Task {
     temp = 10
 
     @observable
-    timeOn = "06:20"
+    timeOn = "06:00"
 
     @observable
-    time = 5
+    time = 10
 
     constructor(data = {}) {
         this.setProps(data);

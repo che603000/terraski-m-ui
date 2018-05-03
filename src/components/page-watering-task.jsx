@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Toolbar, Page, BackButton, List, ListItem, Switch, Select, Input, Range, BottomToolbar, Button} from 'react-onsenui';
 import ons from 'onsenui';
 import {observer} from 'mobx-react';
-import {TASK_SAVE} from '../commands/const';
+import {CMD_TASK_SAVE} from '../const';
 
 @observer
 export default class Task extends Component {
@@ -47,7 +47,7 @@ export default class Task extends Component {
 
     onSave = () => {
         const {data, commands, navigator, options} = this.props;
-        return commands(TASK_SAVE, data, options)
+        return commands(CMD_TASK_SAVE, data, options)
             .then(() => navigator.popPage());
     }
 

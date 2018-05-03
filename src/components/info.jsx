@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TASK_SAVE} from '../commands/const';
+import {CMD_TASK_SAVE} from '../const';
 
 
 export default class Info extends Component {

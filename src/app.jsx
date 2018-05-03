@@ -27,7 +27,8 @@ export default class App extends React.Component {
                                 <Route exact path="/" component={Main}/>
                                 <Route exact path="/info" component={Info}/>
                                 <Route exact path="/tasks" component={TaskList}/>
-                                <Route exact path="/tasks/:id" component={TaskItem}/>
+                                <Route exact path="/task" component={TaskItem}/>
+                                <Route exact path="/task/:id" component={TaskItem}/>
                                 <Route component={NoMatch}/>
                             </Switch>
                         </div>
