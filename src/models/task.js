@@ -20,9 +20,6 @@ export default class Task {
     name = 'Новая задача'
 
     @observable
-    active = false
-
-    @observable
     temp = 10
 
     @observable

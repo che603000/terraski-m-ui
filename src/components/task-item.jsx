@@ -11,7 +11,7 @@ import ModelTask from '../models/task';
 @inject((stores, props) => {
     const {match: {params: {id}}} = props;
     const {tasks, commands} = stores;
-    const task = tasks.find(item => item.id === id);
+    const task = tasks.items.find(item => item.id === id);
     return {task, commands};
 })
 @observer

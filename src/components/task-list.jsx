@@ -83,28 +83,42 @@ export default class TaskList extends Component {
             });
     }
 
+    componentWillMount() {
+        const {tasks} = this.props;
+        tasks.fetch()
+    }
+
+    renderWait() {
+        return (
+            <div>Loading...</div>
+        )
+    }
+
     render() {
         const {tasks} = this.props;
-        const items = tasks.peek().map(t => <Item key={t.id} {...t} onRemove={this.onRemove}/>);
+        const items = tasks.items.peek().map(t => <Item key={t.id} {...t} onRemove={this.onRemove}/>);
 
-        return (
-            <div>
-                <List>
-                    {items}
-                </List>
+        if (tasks.isLoading)
+            return this.renderWait();
+        else
+            return (
+                <div>
+                    <List>
+                        {items}
+                    </List>
 
-                <Divider/>
-                <Snackbar
-                    open={this.state.open}
-                    message={this.state.message}
-                    bodyStyle={{backgroundColor: this.state.type}}
-                    autoHideDuration={4000}
-                    onRequestClose={() => this.setState({open: false})}
-                />
-                <Link to={'/task'}>
-                    <FlatButton label="Новая задача" fullWidth={true} labelPosition={"after"}/>
-                </Link>
-            </div>
-        );
+                    <Divider/>
+                    <Snackbar
+                        open={this.state.open}
+                        message={this.state.message}
+                        bodyStyle={{backgroundColor: this.state.type}}
+                        autoHideDuration={4000}
+                        onRequestClose={() => this.setState({open: false})}
+                    />
+                    <Link to={'/task'}>
+                        <FlatButton label="Новая задача" fullWidth={true} labelPosition={"after"}/>
+                    </Link>
+                </div>
+            );
     }
 }

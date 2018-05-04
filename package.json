@@ -22,5 +22,10 @@
     "react-app-rewire-mobx": "^1.0.8",
     "react-app-rewired": "^1.5.2",
     "replace-bundle-webpack-plugin": "^1.0.0"
+  },
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:4000"
+    }
   }
 }
