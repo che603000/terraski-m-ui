@@ -4,11 +4,11 @@ export default class Task {
 
     @computed
     get isNew(){
-        return !this.id;
+        return !this._id;
     }
 
     @observable
-    id = undefined
+    _id = undefined
 
     @observable
     active = true

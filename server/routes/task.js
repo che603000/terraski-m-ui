@@ -8,9 +8,15 @@ const Task = mongoose.model('task');
 
 module.exports = (app) => {
     // list
-    router.get('/tasks', (req, res, next) => {
+    router.get('/task', (req, res, next) => {
+
         Task.find()
-            .then(tasks => res.json(tasks))
+            .then(tasks => {
+                //setTimeout(()=>{
+                    res.json(tasks)
+                //}, 2000)
+
+            })
             .catch(err => next(err))
     });
 
@@ -33,29 +39,27 @@ module.exports = (app) => {
     // edit
     router.put('/task', (req, res, next) => {
         const {body} = req;
-        // Task.findByIdAndUpdate(body.id, body, {
-        //     new: true
-        // })
-        Task.findById(body.id)
+        Task.findById(body._id)
             .then(task => {
                 if (task)
-                    return task
+                    return task;
                 else
-                    throw  new Error(`not fount task ${body.id}`)
+                    throw  new Error(`not fount task ${body._id}`);
             })
             .then(task => {
                 Object.keys(body).forEach(key => task[key] = body[key]);
                 return task;
             })
             .then(task => task.save())
-            .then(task => req.json(task))
+            .then(task => res.json(task))
             .catch(err => next(err))
     });
 
     //remove
     router.delete('/task/:id', (req, res, next) => {
         const {id} = req.params;
-        Task.remove({id: new ObjectId(id)})
+        Task.findById(id)
+            .remove()
             .then(task => res.end())
             .catch(err => next(err))
     });

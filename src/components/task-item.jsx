@@ -11,7 +11,7 @@ import ModelTask from '../models/task';
 @inject((stores, props) => {
     const {match: {params: {id}}} = props;
     const {tasks, commands} = stores;
-    const task = tasks.items.find(item => item.id === id);
+    const task = tasks.items.find(item => item._id === id);
     return {task, commands};
 })
 @observer
@@ -21,19 +21,12 @@ export default class TaskItem extends Component {
         router: PropTypes.object
     }
 
-    state = {
-        open: false,
-        message: "no message",
-        type: TYPE_MESSAGE_SUCCESS
-    }
-
     isChange = false;
 
     onSave = () => {
         const {commands} = this.props;
         commands(CMD_TASK_SAVE, this.task)
             .then(() => this.onCancel())
-            .catch(err => this.setState({open: true, message: err.message, type: TYPE_MESSAGE_ERROR}));
     }
 
     onCancel = () => {
@@ -143,13 +136,7 @@ export default class TaskItem extends Component {
                 </div>
                 <FlatButton label="Отменить" fullWidth={false} labelPosition={"after"} onClick={this.onCancel}/>
                 <FlatButton label="Сохранить" fullWidth={false} labelPosition={"after"} primary={true} onClick={this.onSave}/>
-                <Snackbar
-                    open={this.state.open}
-                    message={this.state.message}
-                    bodyStyle={{backgroundColor: this.state.type}}
-                    autoHideDuration={4000}
-                    onRequestClose={() => this.setState({open: false})}
-                />
+
             </div>
         );
     }
