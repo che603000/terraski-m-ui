@@ -2,25 +2,24 @@ const express = require('express');
 const router = express.Router();
 
 const mongoose = require('mongoose');
-const ObjectId = mongoose.modelSchemas.ObjectId;
 
 const Task = mongoose.model('task');
 
 module.exports = (app) => {
-    // list
+    // get list
     router.get('/task', (req, res, next) => {
 
         Task.find()
             .then(tasks => {
                 //setTimeout(()=>{
-                    res.json(tasks)
+                res.json(tasks)
                 //}, 2000)
 
             })
             .catch(err => next(err))
     });
 
-    // get
+    // get item
     router.get('/task/:id', (req, res, next) => {
         const {id} = req.params;
         Task.findById(id)

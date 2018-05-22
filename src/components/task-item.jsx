@@ -2,18 +2,13 @@ import React, {Component, PropTypes} from 'react';
 import {observer, inject} from 'mobx-react';
 
 import {TextField, Toggle, Slider, SelectField, MenuItem, TimePicker, FlatButton, Snackbar} from 'material-ui';
-import FontIcon from 'material-ui/FontIcon';
+//import FontIcon from 'material-ui/FontIcon';
 
-import {CMD_TASK_SAVE, TYPE_MESSAGE_SUCCESS, TYPE_MESSAGE_ERROR} from '../const';
+import {WATERING_AREAS} from '../config';
+import {errorMessage} from '../services/message';
 import ModelTask from '../models/task';
 
 
-@inject((stores, props) => {
-    const {match: {params: {id}}} = props;
-    const {tasks, commands} = stores;
-    const task = tasks.items.find(item => item._id === id);
-    return {task, commands};
-})
 @observer
 export default class TaskItem extends Component {
 
@@ -23,13 +18,20 @@ export default class TaskItem extends Component {
 
     isChange = false;
 
-    onSave = () => {
-        const {commands} = this.props;
-        commands(CMD_TASK_SAVE, this.task)
-            .then(() => this.onCancel())
+    constructor() {
+        super(...arguments);
+        this.task = new ModelTask();
     }
 
-    onCancel = () => {
+    onSave = () => {
+        this.task.save()
+            .then(() => this.onCancel(true))
+            .catch(err => errorMessage(err))
+    }
+
+    onCancel = (isSave) => {
+        !isSave && this.task.undo();
+
         const {router: {history}} = this.context;
         history.goBack();
     }
@@ -54,7 +56,8 @@ export default class TaskItem extends Component {
     }
 
     componentWillMount() {
-        this.task = this.props.task ? this.props.task.clone() : new ModelTask();
+        const {match: {params: {id}}} = this.props;
+        this.task.fetch(id).then(() => this.task.setUndo());
     }
 
     render() {
@@ -91,11 +94,7 @@ export default class TaskItem extends Component {
                         value={area}
                         onChange={(e, value, payload) => this.onChange('area', payload)}
                     >
-                        <MenuItem value={1} primaryText="Большой газон"/>
-                        <MenuItem value={2} primaryText="Малый газон"/>
-                        <MenuItem value={3} primaryText="Розы у забора"/>
-                        <MenuItem value={4} primaryText="Перед домом"/>
-                        <MenuItem value={5} primaryText="За забором"/>
+                        {WATERING_AREAS.map(item => <MenuItem key={item.value} value={item.value} primaryText={item.name}/>)}
                     </SelectField>
                     <br/>
                     <TimePicker
@@ -134,8 +133,8 @@ export default class TaskItem extends Component {
 
                     </div>
                 </div>
-                <FlatButton label="Отменить" fullWidth={false} labelPosition={"after"} onClick={this.onCancel}/>
-                <FlatButton label="Сохранить" fullWidth={false} labelPosition={"after"} primary={true} onClick={this.onSave}/>
+                <FlatButton label="Отменить" fullWidth={false} labelPosition={"after"} onClick={e => this.onCancel()}/>
+                <FlatButton label="Сохранить" fullWidth={false} labelPosition={"after"} primary={true} onClick={e => this.onSave()}/>
 
             </div>
         );

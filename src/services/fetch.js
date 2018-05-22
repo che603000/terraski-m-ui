@@ -1,11 +1,9 @@
 import Task from "../models/task";
 
-const url ='/api/task';
+const url = '/api/task';
 
 
-export const appFetch = () => {
-    return Promise.resolve();
-}
+export const add = (data, opt) =>  save(data, {method: 'POST'});
 
 export const save = (data, opt) => {
     const options = {
@@ -28,15 +26,29 @@ export const save = (data, opt) => {
         });
 };
 
-export const list =() =>{
+export const list = () => {
     return window.fetch(url)
         .then(res => {
             if (res.ok)
                 return res.json();
-            else
-                throw new Error('error request')
+            else {
+                const {status, statusText} = res;
+                throw {status, message: statusText};
+            }
+
         })
-        .then(items => this.items = items.map(t => new Task(t)))
+}
+
+export const item = (id) => {
+    return window.fetch(`${url}/${id}`)
+        .then(res => {
+            if (res.ok)
+                return res.json();
+            else {
+                const {status, statusText} = res;
+                throw {status, message: statusText};
+            }
+        })
 }
 
 export const remove = (id) => window.fetch(`${url}/${id}`, {method: "DELETE"});

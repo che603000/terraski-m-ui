@@ -4,7 +4,7 @@ const {Schema} = mongoose;
 const schema = new Schema({
     active: {
         type: Boolean,
-        default: false
+        default: true
     },
     name: {
         type: String
@@ -13,7 +13,7 @@ const schema = new Schema({
         type: Number,
         default: 0
     },
-    tineOn: {
+    timeOn: {
         type: String,
         default: "06:00"
     },
@@ -25,7 +25,6 @@ const schema = new Schema({
         type: Number,
         default: 10
     },
-
 });
 
 const Task = mongoose.model('task', schema);

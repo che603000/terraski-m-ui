@@ -3,14 +3,15 @@ import {observer, inject} from 'mobx-react';
 
 import {Link} from 'react-router-dom';
 
-import {List, ListItem, Dialog, FlatButton,  Divider} from 'material-ui';
+import {List, ListItem, Dialog, FlatButton, Divider} from 'material-ui';
 import {ActionDelete} from 'material-ui/svg-icons';
 
-import ModelTask from '../models/task';
-import {CMD_TASK_REMOVE} from '../const';
+import {infoMessage, successMessage, errorMessage, closeMessage} from '../services/message';
 
+import {WATERING_AREAS} from '../config';
 
-@observer
+const nameArea = (value) => WATERING_AREAS.find(item => item.value === value).name;
+
 class Item extends Component {
 
     state = {
@@ -24,7 +25,7 @@ class Item extends Component {
     }
 
     render() {
-        const {_id, name, onRemove} = this.props;
+        const {_id, name, time, area, timeOn, active, onRemove} = this.props;
         const actions = [
             <FlatButton
                 label="Нет"
@@ -52,8 +53,14 @@ class Item extends Component {
 
                     будет удалена. Продолжать ?
                 </Dialog>
-                <Link to={`/task/${_id}`}  title={_id}>
-                    <ListItem primaryText={`${name}`} rightIcon={<ActionDelete onClick={this.onRemove}/>}/>
+                <Link to={`/task/${_id}`} title={_id}>
+                    <ListItem rightIcon={<ActionDelete onClick={this.onRemove}/>}>
+                        <div>{name}</div>
+                        <sub>
+                            <small> {nameArea(area)}  {timeOn} ({time} мин.)</small>
+                        </sub>
+
+                    </ListItem>
                 </Link>
             </div>
 
@@ -61,37 +68,41 @@ class Item extends Component {
     }
 }
 
-@inject("tasks", "commands")
+@inject("tasks")
 @observer
 export default class TaskList extends Component {
 
     onRemove = (id) => {
-        const {commands} = this.props;
-        id && commands(CMD_TASK_REMOVE, {id})
+        id && this.props.tasks.remove(id)
+            .then(() => successMessage('Задача удалена...'))
+            //.then(() => closeMessage())
+            .catch(err => errorMessage(err))
     }
 
-    renderWait() {
-        return (
-            <div>Loading...</div>
-        )
+    componentWillMount() {
+        //infoMessage('Запрос списка задач...')
+        this.props.tasks.fetch()
+        //.then(data => successMessage(`Всего задач: ${data.length}`))
+            .then(data => closeMessage())
+            .catch(err => errorMessage(err));
+
     }
 
     render() {
         const {tasks} = this.props;
-        const items = tasks.items.peek().map(item => <Item key={item._id} {...item} onRemove={this.onRemove}/>);
+        const items = tasks.toJSON().map(item => <Item key={item._id} {...item} onRemove={this.onRemove}/>);
+        return (
+            <div>
+                <List>
+                    {items}
+                </List>
 
-            return (
-                <div>
-                    <List>
-                        {items}
-                    </List>
+                <Divider/>
 
-                    <Divider/>
-
-                    <Link to={'/task'}>
-                        <FlatButton label="Новая задача" fullWidth={true} labelPosition={"after"}/>
-                    </Link>
-                </div>
-            );
+                <Link to={'/task'}>
+                    <FlatButton label="Новая задача" fullWidth={true} labelPosition={"after"}/>
+                </Link>
+            </div>
+        );
     }
 }

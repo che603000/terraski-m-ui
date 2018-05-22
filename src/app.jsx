@@ -17,7 +17,7 @@ import {CMD_TASK_LIST} from "./const";
 
 const NoMatch = () => <div>Route not match...</div>
 
-commands(CMD_TASK_LIST)
+//commands(CMD_TASK_LIST)
 
 export default class App extends React.Component {
     render() {

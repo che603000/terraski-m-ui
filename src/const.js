@@ -8,3 +8,4 @@ export const CMD_TASK_REMOVE = 'task-remove';
 export const CMD_TASK_SAVE = 'task-save';
 export const CMD_TASK_ADD = 'task-add';
 export const CMD_TASK_LIST = 'task-list';
+export const CMD_TASK_ITEM = 'task-item';
