@@ -4,8 +4,12 @@
 /*}*/
 /*}*/
 
-html, body {
-    max-width: 400px;
-    margin: auto;
-    background: aliceblue;
+/*html, body {*/
+/*max-width: 400px;*/
+/*margin: auto;*/
+/*background: aliceblue;*/
+/*}*/
+
+.app-list-item {
+    text-decoration: none;
 }

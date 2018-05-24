@@ -1,8 +1,8 @@
-import {observable, action} from 'mobx';
-import Task from './task';
 import Tasks from './task-list';
-import Fotter from './footter';
+import Footer from './footer';
+import tools from './app-tools';
 
 export const tasks = new Tasks();
-export const footer = new Fotter();
+export const footer = new Footer();
+export const appTools = tools;
 

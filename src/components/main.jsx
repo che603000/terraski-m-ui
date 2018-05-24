@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {Paper} from 'material-ui';
+import {Paper} from '@material-ui/core';
 
 class Item extends Component {
     render() {
@@ -16,7 +16,7 @@ class Item extends Component {
         };
         return (
             <Link to={url}>
-                <Paper style={style} zDepth={3} title={title}>
+                <Paper style={style} title={title}>
                     {title}
                 </Paper>
             </Link>

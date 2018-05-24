@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {observer, inject} from 'mobx-react';
 
-import {TextField, Toggle, Slider, SelectField, MenuItem, TimePicker, FlatButton, Snackbar} from 'material-ui';
+import {TextField, Switch as Toggle, Slide as Slider, Select, MenuItem, Button, Snackbar} from '@material-ui/core';
 //import FontIcon from 'material-ui/FontIcon';
 
 import {WATERING_AREAS} from '../config';
@@ -86,7 +86,7 @@ export default class TaskItem extends Component {
                         onChange={(e, value) => this.onChange('name', value)}
                     />
                     <br/>
-                    <SelectField
+                    <Select
                         hintText={"Зоны полива"}
                         disabled={!active}
                         floatingLabelText="выберете зону для полива"
@@ -95,10 +95,11 @@ export default class TaskItem extends Component {
                         onChange={(e, value, payload) => this.onChange('area', payload)}
                     >
                         {WATERING_AREAS.map(item => <MenuItem key={item.value} value={item.value} primaryText={item.name}/>)}
-                    </SelectField>
+                    </Select>
                     <br/>
-                    <TimePicker
+                    <TextField
                         disabled={!active}
+                        type={"time"}
                         format="24hr"
                         floatingLabelText="Время начала полива"
                         floatingLabelFixed={true}
@@ -133,8 +134,9 @@ export default class TaskItem extends Component {
 
                     </div>
                 </div>
-                <FlatButton label="Отменить" fullWidth={false} labelPosition={"after"} onClick={e => this.onCancel()}/>
-                <FlatButton label="Сохранить" fullWidth={false} labelPosition={"after"} primary={true} onClick={e => this.onSave()}/>
+                {/*<FlatButton label="Отменить" fullWidth={false} labelPosition={"after"} onClick={e => this.onCancel()}/>*/}
+                {/*<FlatButton label="Сохранить" fullWidth={false} labelPosition={"after"} primary={true} onClick={e => this.onSave()}*/}
+                />
 
             </div>
         );

@@ -3,7 +3,7 @@ import {Provider} from 'mobx-react';
 import {lightBaseTheme, MuiThemeProvider, getMuiTheme} from 'material-ui/styles';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
-import {tasks, footer} from './models';
+import {tasks, footer, appTools} from './models';
 import commands from './commands';
 
 import Main from './components/main';
@@ -12,18 +12,22 @@ import Footer from './components/footer';
 import Info from './components/info';
 import TaskList from './components/task-list';
 import TaskItem from './components/task-item';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import {CMD_TASK_LIST} from "./const";
+
+import AddIcon from '@material-ui/icons/Add';
+
 
 
 const NoMatch = () => <div>Route not match...</div>
 
-//commands(CMD_TASK_LIST)
-
 export default class App extends React.Component {
     render() {
         return (
-            <Provider tasks={tasks} footer={footer} commands={commands}>
-                <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+            <div>
+                <CssBaseline/>
+                <Provider tasks={tasks} footer={footer} appTools={appTools} commands={commands}>
+                    {/*<MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>*/}
                     <Router>
                         <div>
                             <Route component={Header}/>
@@ -38,8 +42,9 @@ export default class App extends React.Component {
                             <Route component={Footer}/>
                         </div>
                     </Router>
-                </MuiThemeProvider>
-            </Provider>
+                    {/*</MuiThemeProvider>*/}
+                </Provider>
+            </div>
         );
     }
 }
