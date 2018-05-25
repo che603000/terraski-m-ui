@@ -3,12 +3,13 @@ import {Provider} from 'mobx-react';
 import {lightBaseTheme, MuiThemeProvider, getMuiTheme} from 'material-ui/styles';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
-import {tasks, footer, appTools} from './models';
+import {tasks, message, appTools} from './models';
 import commands from './commands';
 
 import Main from './components/main';
 import Header from './components/header';
 import Footer from './components/footer';
+import Message from './components/message';
 import Info from './components/info';
 import TaskList from './components/task-list';
 import TaskItem from './components/task-item';
@@ -26,7 +27,7 @@ export default class App extends React.Component {
         return (
             <div>
                 <CssBaseline/>
-                <Provider tasks={tasks} footer={footer} appTools={appTools} commands={commands}>
+                <Provider tasks={tasks} message={message} appTools={appTools} commands={commands}>
                     {/*<MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>*/}
                     <Router>
                         <div>
@@ -39,6 +40,7 @@ export default class App extends React.Component {
                                 <Route exact path="/task/:id" component={TaskItem}/>
                                 <Route component={NoMatch}/>
                             </Switch>
+                            <Route component={Message}/>
                             <Route component={Footer}/>
                         </div>
                     </Router>

@@ -1,9 +1,9 @@
-import {footer} from '../models/index';
+import {message} from '../models/index';
 import {TYPE_MESSAGE_SUCCESS, TYPE_MESSAGE_ERROR, TYPE_MESSAGE_INFO} from '../const';
 
 
 export const infoMessage = (message) => {
-    footer.setProps({
+    message.setProps({
         open: true,
         message,
         type: TYPE_MESSAGE_INFO
@@ -11,7 +11,7 @@ export const infoMessage = (message) => {
 };
 
 export const successMessage = (message) => {
-    footer.setProps({
+    message.setProps({
         open: true,
         message,
         type: TYPE_MESSAGE_SUCCESS,
@@ -20,7 +20,7 @@ export const successMessage = (message) => {
 };
 
 export const errorMessage = (err) => {
-    footer.setProps({
+    message.setProps({
         open: true,
         message: `${err.status} ${err.message}`,
         type: TYPE_MESSAGE_ERROR,
@@ -29,7 +29,7 @@ export const errorMessage = (err) => {
 }
 
 export const closeMessage = (message) => {
-    footer.setProps({
+    message.setProps({
         open: false
     })
 }

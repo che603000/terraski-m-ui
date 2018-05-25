@@ -1,8 +1,8 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {observer, inject} from 'mobx-react';
 
 import {TextField, Switch as Toggle, Slide as Slider, Select, MenuItem, Button, Snackbar} from '@material-ui/core';
-//import FontIcon from 'material-ui/FontIcon';
 
 import {WATERING_AREAS} from '../config';
 import {errorMessage} from '../services/message';

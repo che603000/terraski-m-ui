@@ -1,5 +1,8 @@
 import {red900, green900, yellow400, amber900} from 'material-ui/styles/colors';
 
+export const TYPE_MESSAGE_DIALOG = 'dialog';
+export const TYPE_MESSAGE_ALERT = 'alert';
+
 export const TYPE_MESSAGE_ERROR = red900;
 export const TYPE_MESSAGE_SUCCESS = green900;
 export const TYPE_MESSAGE_INFO = amber900;

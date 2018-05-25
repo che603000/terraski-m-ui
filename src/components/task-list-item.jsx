@@ -1,4 +1,6 @@
-import React, {Component, PropTypes} from 'react';
+import {observer, inject} from 'mobx-react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
 import {withStyles} from '@material-ui/core/styles';
@@ -28,6 +30,7 @@ const styles = theme => ({
 
 
 @withStyles(styles)
+@inject("message")
 export default class Item extends Component {
 
     static propTypes = {
@@ -40,54 +43,30 @@ export default class Item extends Component {
     }
 
     onRemove = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        this.setState({open: true});
+        const {message} = this.props;
+        message.dialog({title: "Remove task ?", message: "test !!!"})
+            .then(() => console.log("delete"))
+            .catch(_ => console.log("cancel"))
     }
 
     render() {
         const {_id, name, time, area, timeOn, active, onRemove, classes} = this.props;
-        const actions = [
-            <Button
-                label="Нет"
-                primary={true}
-                onClick={() => this.setState({open: false})}
-            />,
-            <Button
-                label="Да"
-                onClick={() => {
-                    this.setState({open: false});
-                    onRemove(_id)
-                }}
-            />,
-        ];
         return (
             <ListItem>
-                <Dialog
-                    contentStyle={{width: '300px'}}
-                    title="Удаление"
-                    actions={actions}
-                    modal={true}
-                    open={this.state.open}
-                >
-                    <h4>"{name}"</h4>
-
-                    будет удалена. Продолжать ?
-                </Dialog>
-                <Link to={`/task/${_id}`} title={_id} className={"app-list-item"}>
-
-                    <ListItemText>
+                <ListItemText>
+                    <Link to={`/task/${_id}`} title={_id} className={"app-list-item"}>
                         <div>{name}</div>
                         <sub>
                             <small> {nameArea(area)} {timeOn} ({time} мин.)</small>
                         </sub>
-                    </ListItemText>
-                    <ListItemSecondaryAction>
-                        <IconButton aria-label="Comments">
-                            <Delete/>
-                        </IconButton>
-                    </ListItemSecondaryAction>
-                </Link>
+                    </Link>
+                </ListItemText>
+                <ListItemSecondaryAction>
+                    <IconButton aria-label="Comments" onClick={this.onRemove}>
+                        <Delete/>
+                    </IconButton>
+                </ListItemSecondaryAction>
+
 
             </ListItem>
 
