@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 import {withStyles} from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
@@ -37,8 +38,8 @@ class Footer extends React.Component {
                 onChange={this.handleChange}
                 showLabels
             >
-                <BottomNavigationAction label="Задачи" icon={<List/>}/>
-                <BottomNavigationAction label="Мониторинг" icon={<HourglassEmpty/>}/>
+                <BottomNavigationAction label="Задачи" icon={<List/>} component={Link} to={'/tasks'}/>
+                <BottomNavigationAction label="Мониторинг" icon={<HourglassEmpty/>} component={Link} to={'/info'}/>
                 <BottomNavigationAction label="События" icon={<LocationOn/>}/>
             </BottomNavigation>
         );

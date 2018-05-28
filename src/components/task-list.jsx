@@ -62,8 +62,8 @@ export default class TaskList extends Component {
 
     componentWillMount() {
         const {tasks, appTools} = this.props;
-        appTools.replace(this.tools);
         tasks.fetch()
+            .then(data => appTools.replace(this.tools))
             .then(data => closeMessage())
             .catch(err => errorMessage(err));
 

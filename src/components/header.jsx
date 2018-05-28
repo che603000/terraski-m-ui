@@ -67,7 +67,7 @@ class Header extends Component {
                             Home 95
                         </Typography>
                         {toolBar}
-                        <Button color="inherit">User</Button>
+                        {/*<Button color="inherit">User</Button>*/}
 
                     </Toolbar>
                 </AppBar>

@@ -23,7 +23,7 @@ export default class Tasks {
                 this.setItems(items);
                 return items;
             })
-            .finally(() => this.isLoading = false)
+            //.finally(() => this.isLoading = false)
     }
 
     @action
@@ -33,7 +33,7 @@ export default class Tasks {
                 const item = this.item(id);
                 this.items.remove(item);
             })
-            .finally(() => this.isLoading = false)
+            //.finally(() => this.isLoading = false)
 
     }
 
